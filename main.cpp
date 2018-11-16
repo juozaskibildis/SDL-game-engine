@@ -254,9 +254,9 @@ bool loadMedia()
 	bool success = true;
 
 	// Load prompt texture
-	if( !gPromptTexture.loadFromFile( "res/prompt.png" ) )
+	if( !gPromptTexture.loadFromFile( "res/bg.png" ) )
 	{
-		printf( "Failed to load prompt texture!\n" );
+		printf( "Failed to load background texture!\n" );
 		success = false;
 	}
 
@@ -293,10 +293,10 @@ bool loadMedia()
 	}
 	
 	// Load sound effects
-	gScratch = Mix_LoadWAV( "res/scratch.wav" );
+	gScratch = Mix_LoadWAV( "res/step.wav" );
 	if( gScratch == NULL )
 	{
-		printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+		printf( "Failed to load step sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
 		success = false;
 	}
 	
