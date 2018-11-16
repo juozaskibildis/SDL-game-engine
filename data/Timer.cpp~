@@ -1,0 +1,112 @@
+// Timer class
+
+#include <SDL2/SDL.h>
+
+class Timer 
+{ 
+	public:  
+		Timer(); 
+ 
+		void start(); 
+		void stop(); 
+		void pause(); 
+		void resume(); 
+
+		// Need float for fps calculation
+		float getTicks(); 			// Could use Uint32 for higher values?
+
+		 // Timer status
+		 bool paused;
+		 bool active;
+
+       	private: 
+		 // Clock time when the timer was started
+		 int startTicks;
+
+		 // Time when timer was paused
+		 int pausedTicks;
+};
+
+//-----------------------------------------------
+// Methods
+
+Timer::Timer()
+{ 
+	// Initialize variables
+	startTicks = 0;
+       	pausedTicks = 0;
+       	paused = false;
+       	active = false;
+}
+
+void Timer::start() 
+{
+       	// Start timer
+	active = true;
+       	// Unpause timer
+	paused = false;
+       	// Get clock time 
+	startTicks = SDL_GetTicks();
+       	pausedTicks = 0;
+}
+
+void Timer::stop() 
+{ 
+	// Stop the timer
+	active = false;
+       	// Unpause the timer
+	paused = false;
+       	// Clear time variables
+	startTicks = 0;
+       	pausedTicks = 0;
+} 
+
+void Timer::pause()
+{ 
+	// If the timer is active and isn't paused 
+	if( active && !paused ) 
+	{ 
+		// Pause the timer 
+		paused = true; 
+		// Get the time at the pause 
+		pausedTicks = SDL_GetTicks() - startTicks; 
+		startTicks = 0;
+       	} 
+} 
+
+void Timer::resume() 
+{ 
+	// If the timer is active and paused 
+	if( active && paused ) 
+	{ 
+		// Unpause the timer 
+		paused = false; 
+		// Reset the starting ticks 
+		startTicks = SDL_GetTicks() - pausedTicks; 
+		// Reset the paused ticks 
+		pausedTicks = 0; 
+	} 
+}
+
+float Timer::getTicks() 
+{ 
+	float time = 0; 
+	// If the timer is active 
+	if( active ) 
+	{ 
+		// If the timer is paused 
+		if( paused ) 
+		{ 
+			// Return the number of ticks when the timer was paused 
+			time = pausedTicks; 
+		} 
+		else 
+		{ 
+			// Return the time running 
+			time = SDL_GetTicks() - startTicks; 
+		} 
+	} 
+	return time; 
+}
+
+
